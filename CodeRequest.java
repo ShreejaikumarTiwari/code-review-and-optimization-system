@@ -1,0 +1,20 @@
+package com.codereviewer.dto;
+
+public class CodeRequest {
+
+    private String code;
+    private String language;
+
+    public CodeRequest() {}
+
+    public String getCode() { return code; }
+    public void setCode(String code) { this.code = code; }
+
+    public String getLanguage() { return language; }
+    public void setLanguage(String language) { this.language = language; }
+
+    public String getLanguageOrDefault() {
+        if (language == null || language.isBlank()) return "java";
+        return language.toLowerCase().trim();
+    }
+}
