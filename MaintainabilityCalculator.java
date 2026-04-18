@@ -1,5 +1,7 @@
 package com.codereviewer.analyzer;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MaintainabilityCalculator {
 
     public int calculate(int linesOfCode, int cyclomatic, int maxDepth) {
