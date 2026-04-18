@@ -15,6 +15,9 @@ public class CodeRequest {
 
     public String getLanguageOrDefault() {
         if (language == null || language.isBlank()) return "java";
+        
+        if(language == "cpp" )
+            return "c++";
         return language.toLowerCase().trim();
     }
 }

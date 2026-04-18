@@ -14,7 +14,7 @@ public class InputValidator {
     private static final int MAX_CODE_LENGTH = 50_000;
     private static final int MIN_CODE_LENGTH = 5;
     private static final Set<String> SUPPORTED_LANGUAGES = Set.of(
-            "java", "python", "cpp", "c++"
+            "java", "python", "cpp", "C++"
     );
 
     public List<String> validate(CodeRequest request) {

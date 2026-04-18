@@ -4,27 +4,32 @@ import java.util.List;
 
 public class AnalysisResponse {
 
-    private final int totalLoops;
-    private final int maxDepth;
-    private final String timeComplexity;
-    private final String spaceComplexity;
-    private final String bigOPattern;
-    private final int cyclomaticComplexity;
-    private final double energyConsumption;
-    private final String memoryUsage;
-    private final int maintainabilityIndex;
-    private final String grade;
-    private final String cacheFriendliness;
-    private final String language;
-    private final String optimizedCode;
-    private final List<LineIssue> lineIssues;
-    private final List<String> recursionFindings;
-    private final List<String> codeSmells;
-    private final List<String> suggestions;
-    private final List<String> securityIssues;
-    private final List<String> duplicateCodeFindings;
-    private final int score;
+    private int totalLoops;
+    private int maxDepth;
+    private String timeComplexity;
+    private String spaceComplexity;
+    private String bigOPattern;
+    private int cyclomaticComplexity;
+    private double energyConsumption;
+    private String memoryUsage;
+    private int maintainabilityIndex;
+    private String grade;
+    private String cacheFriendliness;
+    private String language;
+    private String optimizedCode;
+    private String summary;        // ← ADDED (controller uses setSummary)
+    private List<LineIssue> lineIssues;
+    private List<String> recursionFindings;
+    private List<String> codeSmells;
+    private List<String> suggestions;
+    private List<String> securityIssues;
+    private List<String> duplicateCodeFindings;
+    private int score;
 
+    // No-arg constructor (required by controller)
+    public AnalysisResponse() {}
+
+    // Full constructor (keep for existing usages)
     public AnalysisResponse(int totalLoops, int maxDepth,
                             String timeComplexity, String spaceComplexity,
                             String bigOPattern, int cyclomaticComplexity,
@@ -58,6 +63,30 @@ public class AnalysisResponse {
         this.score = score;
     }
 
+    // Setters (required by controller)
+    public void setSummary(String summary) { this.summary = summary; }
+    public void setScore(int score) { this.score = score; }
+    public void setTotalLoops(int totalLoops) { this.totalLoops = totalLoops; }
+    public void setMaxDepth(int maxDepth) { this.maxDepth = maxDepth; }
+    public void setTimeComplexity(String timeComplexity) { this.timeComplexity = timeComplexity; }
+    public void setSpaceComplexity(String spaceComplexity) { this.spaceComplexity = spaceComplexity; }
+    public void setBigOPattern(String bigOPattern) { this.bigOPattern = bigOPattern; }
+    public void setCyclomaticComplexity(int cyclomaticComplexity) { this.cyclomaticComplexity = cyclomaticComplexity; }
+    public void setEnergyConsumption(double energyConsumption) { this.energyConsumption = energyConsumption; }
+    public void setMemoryUsage(String memoryUsage) { this.memoryUsage = memoryUsage; }
+    public void setMaintainabilityIndex(int maintainabilityIndex) { this.maintainabilityIndex = maintainabilityIndex; }
+    public void setGrade(String grade) { this.grade = grade; }
+    public void setCacheFriendliness(String cacheFriendliness) { this.cacheFriendliness = cacheFriendliness; }
+    public void setLanguage(String language) { this.language = language; }
+    public void setOptimizedCode(String optimizedCode) { this.optimizedCode = optimizedCode; }
+    public void setLineIssues(List<LineIssue> lineIssues) { this.lineIssues = lineIssues; }
+    public void setRecursionFindings(List<String> recursionFindings) { this.recursionFindings = recursionFindings; }
+    public void setCodeSmells(List<String> codeSmells) { this.codeSmells = codeSmells; }
+    public void setSuggestions(List<String> suggestions) { this.suggestions = suggestions; }
+    public void setSecurityIssues(List<String> securityIssues) { this.securityIssues = securityIssues; }
+    public void setDuplicateCodeFindings(List<String> duplicateCodeFindings) { this.duplicateCodeFindings = duplicateCodeFindings; }
+
+    // All existing getters stay exactly the same
     public int getTotalLoops() { return totalLoops; }
     public int getMaxDepth() { return maxDepth; }
     public String getTimeComplexity() { return timeComplexity; }
@@ -71,6 +100,7 @@ public class AnalysisResponse {
     public String getCacheFriendliness() { return cacheFriendliness; }
     public String getLanguage() { return language; }
     public String getOptimizedCode() { return optimizedCode; }
+    public String getSummary() { return summary; }
     public List<LineIssue> getLineIssues() { return lineIssues; }
     public List<String> getRecursionFindings() { return recursionFindings; }
     public List<String> getCodeSmells() { return codeSmells; }

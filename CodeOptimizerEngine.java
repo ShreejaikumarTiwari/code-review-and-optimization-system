@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.springframework.stereotype.Component;
+@Component
 /**
  * Enterprise-grade CodeOptimizerEngine for comprehensive code analysis and optimization.
  * 
@@ -18,10 +20,11 @@ import java.util.regex.Pattern;
  * - Extensible pattern-based detection system
  * 
  * Designed for production use in CI/CD pipelines and code review platforms.
- * 
+ 
  * @author CodeReviewer Team
  * @version 2.0
  */
+
 public class CodeOptimizerEngine {
     
     // Severity levels for categorizing issues

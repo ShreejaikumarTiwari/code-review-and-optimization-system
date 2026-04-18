@@ -3,16 +3,21 @@ package com.codereviewer.analyzer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.codereviewer.dto.LineIssue;
+import org.springframework.stereotype.Component;
 
+import com.codereviewer.dto.LineIssue;
+@Component
 public class LanguageAnalyzerRouter {
 
     public List<String> analyzeSecurityByLanguage(String code, String language) {
         List<String> issues = new ArrayList<>();
+        // FIX 1: normalize language to lowercase so callers passing "Python" or "C++"
+        // are handled correctly by every branch in this class.
+        String lang = language.toLowerCase();
 
-        if (language.equals("python")) {
+        if (lang.equals("python")) {
             analyzePythonSecurity(code, issues);
-        } else if (language.equals("cpp") || language.equals("c++")) {
+        } else if (lang.equals("cpp") || lang.equals("c++")) {
             analyzeCppSecurity(code, issues);
         }
 
@@ -21,11 +26,13 @@ public class LanguageAnalyzerRouter {
 
     public List<LineIssue> analyzeLineIssuesByLanguage(String code, String language) {
         List<LineIssue> issues = new ArrayList<>();
+        // FIX 1: normalize language to lowercase.
+        String lang = language.toLowerCase();
         String[] lines = code.split("\n");
 
-        if (language.equals("python")) {
+        if (lang.equals("python")) {
             analyzePythonLines(lines, issues);
-        } else if (language.equals("cpp") || language.equals("c++")) {
+        } else if (lang.equals("cpp") || lang.equals("c++")) {
             analyzeCppLines(lines, issues);
         }
 
@@ -37,6 +44,8 @@ public class LanguageAnalyzerRouter {
         int maxDepth = 0;
         int currentDepth = 0;
 
+        // FIX 1: normalize language to lowercase.
+        String lang = language.toLowerCase();
         String[] lines = code.split("\n");
 
         for (String line : lines) {
@@ -44,9 +53,9 @@ public class LanguageAnalyzerRouter {
 
             boolean isLoop = false;
 
-            if (language.equals("python")) {
+            if (lang.equals("python")) {
                 isLoop = trimmed.startsWith("for ") || trimmed.startsWith("while ");
-            } else if (language.equals("cpp") || language.equals("c++")) {
+            } else if (lang.equals("cpp") || lang.equals("c++")) {
                 isLoop = trimmed.startsWith("for(") || trimmed.startsWith("for (")
                         || trimmed.startsWith("while(") || trimmed.startsWith("while (");
             }
@@ -57,12 +66,18 @@ public class LanguageAnalyzerRouter {
                 maxDepth = Math.max(maxDepth, currentDepth);
             }
 
-            if (language.equals("python") && !trimmed.isEmpty()
-                    && !trimmed.startsWith(" ") && currentDepth > 0) {
-                currentDepth = 0;
+            // FIX 2: the original check reset depth on any non-empty, non-indented line,
+            // which incorrectly zeroed depth mid-block (e.g. on "return x" at top level).
+            // Only reset when we see a top-level dedent: a line whose indentation level
+            // is zero AND that is not itself a loop opener.
+            if (lang.equals("python") && !trimmed.isEmpty() && currentDepth > 0) {
+                int leadingSpaces = line.length() - line.stripLeading().length();
+                if (leadingSpaces == 0 && !isLoop) {
+                    currentDepth = 0;
+                }
             }
 
-            if ((language.equals("cpp") || language.equals("c++"))
+            if ((lang.equals("cpp") || lang.equals("c++"))
                     && trimmed.equals("}")) {
                 currentDepth = Math.max(0, currentDepth - 1);
             }
@@ -125,7 +140,9 @@ public class LanguageAnalyzerRouter {
             String line = lines[i].trim();
             int lineNum = i + 1;
 
-            if (line.startsWith("eval(")) {
+            // FIX 3: use contains() instead of startsWith() for consistency with
+            // analyzePythonSecurity() and to catch mid-line eval() calls.
+            if (line.contains("eval(")) {
                 issues.add(new LineIssue(lineNum, "CRITICAL", "SECURITY",
                         "eval() is dangerous — code injection risk."));
             }
