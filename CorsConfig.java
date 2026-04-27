@@ -16,6 +16,9 @@ public class CorsConfig {
                 registry.addMapping("/api/**")
                         .allowedOrigins("http://localhost:3000")
                         .allowedOrigins("http://localhost:3000") 
+                        registry.addMapping("/api/v1/**")
+                       .allowedOrigins("https://code-review-and-optimization-system-2766-avuhczyqd.vercel.app")
+      
                         .allowedMethods("GET", "POST",
                                 "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
