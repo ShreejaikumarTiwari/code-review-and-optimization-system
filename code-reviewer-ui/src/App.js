@@ -6,7 +6,7 @@ import {
   Bar, XAxis, YAxis, Tooltip, CartesianGrid
 } from "recharts";
 
-const API = process.env.REACT_APP_API_URL;
+const API = "https://code-review-and-optimization-system-production.up.railway.app/api/v1";
 
 const COLORS = {
   A: "#27ae60", "A+": "#1e8449",
